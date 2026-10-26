@@ -1,0 +1,171 @@
+{
+  "name": "okliterun",
+  "displayName": "OkLiteRun",
+  "description": "A lightweight one-click code runner for VS Code (preview). Inspired by Code Runner.",
+  "version": "0.1.0",
+  "publisher": "jonirafael",
+  "license": "MIT",
+  "preview": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jonirafael/okliterun.git"
+  },
+  "homepage": "https://github.com/jonirafael/okliterun",
+  "bugs": {
+    "url": "https://github.com/jonirafael/okliterun/issues"
+  },
+  "qna": false,
+  "engines": {
+    "vscode": "^1.93.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Other"
+  ],
+  "keywords": [
+    "run",
+    "runner",
+    "python",
+    "compiler",
+    "terminal"
+  ],
+  "icon": "media/icon.png",
+  "main": "./dist/extension.js",
+  "extensionKind": [
+    "workspace"
+  ],
+  "capabilities": {
+    "virtualWorkspaces": {
+      "supported": false,
+      "description": "OkLiteRun executes files on a local or remote machine."
+    },
+    "untrustedWorkspaces": {
+      "supported": false,
+      "description": "OkLiteRun runs workspace code and stays disabled until the workspace is trusted."
+    }
+  },
+  "activationEvents": [
+    "onStartupFinished",
+    "onCommand:okliterun.run",
+    "onCommand:okliterun.stop"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "okliterun.run",
+        "title": "Run Code",
+        "category": "OkLiteRun",
+        "icon": "$(play)"
+      },
+      {
+        "command": "okliterun.stop",
+        "title": "Stop",
+        "category": "OkLiteRun",
+        "icon": "$(debug-stop)"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "okliterun.run",
+        "key": "ctrl+alt+r",
+        "mac": "cmd+alt+r",
+        "when": "editorTextFocus && !terminalFocus"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "okliterun.run",
+          "when": "!okliterun.running && (editorLangId =~ /^(python|javascript|typescript|typescriptreact|c|cpp|java|go|php|shellscript|powershell)$/ || okliterun.canRun)",
+          "group": "navigation"
+        },
+        {
+          "command": "okliterun.stop",
+          "when": "okliterun.running",
+          "group": "navigation"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "okliterun.run",
+          "when": "editorLangId =~ /^(python|javascript|typescript|typescriptreact|c|cpp|java|go|php|shellscript|powershell)$/ || okliterun.canRun",
+          "group": "navigation"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "OkLiteRun",
+      "properties": {
+        "okliterun.runInTerminal": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Run in the integrated terminal so programs can read stdin (`input()`, `scanf`, and similar). When this is off, OkLiteRun captures stdout and stderr in an output channel and does not provide stdin."
+        },
+        "okliterun.cwd": {
+          "type": "string",
+          "enum": [
+            "fileDir",
+            "workspaceRoot"
+          ],
+          "enumDescriptions": [
+            "Use the directory of the file being run.",
+            "Use the workspace folder that contains the file."
+          ],
+          "default": "fileDir",
+          "description": "Working directory for the program."
+        },
+        "okliterun.saveBeforeRun": {
+          "type": "boolean",
+          "default": true,
+          "description": "Save the active file before running it. Untitled files still run from a temporary copy if you cancel the save dialog, only when this is off."
+        },
+        "okliterun.clearPreviousOutput": {
+          "type": "boolean",
+          "default": true,
+          "description": "Clear the terminal (or the output channel) before each run."
+        },
+        "okliterun.preserveFocus": {
+          "type": "boolean",
+          "default": false,
+          "description": "Keep focus in the editor after starting a run. Leave this off when the program reads stdin."
+        },
+        "okliterun.pythonPath": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Python executable. When empty, OkLiteRun uses the Python extension's selected interpreter, then `python3`, then `python` (and `py` on Windows)."
+        },
+        "okliterun.executorMap": {
+          "type": "object",
+          "default": {},
+          "additionalProperties": {
+            "type": "string"
+          },
+          "markdownDescription": "Per-language command overrides, keyed by VS Code language id (`python`, `javascript`, `typescript`, `c`, `cpp`, `java`, `go`, `php`, `shellscript`, `powershell`, …). Placeholders are quoted for the active terminal shell: `$file`, `$fileNoExt`, `$dir`, `$fileName`, `$fileNameNoExt`, `$workspaceRoot`, `$exe`, `$python`. Do not add your own quotes around placeholders. Separate compile-and-run steps with ` && ` (spaces around `&&`). Example: `{ \"python\": \"$python -u $file\" }`."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "node esbuild.js --production",
+    "build": "node esbuild.js",
+    "watch": "node esbuild.js --watch",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:integration": "node esbuild.js && node esbuild.tests.js && node ./dist-test/runTest.js",
+    "package": "npx @vscode/vsce package"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^22.10.2",
+    "@types/vscode": "^1.93.0",
+    "@vscode/test-electron": "^2.5.2",
+    "@vscode/vsce": "^3.6.0",
+    "esbuild": "^0.24.2",
+    "eslint": "^9.17.0",
+    "mocha": "^11.0.2",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.18.2",
+    "vitest": "^2.1.8"
+  }
+}
