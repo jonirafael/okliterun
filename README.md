@@ -1,12 +1,16 @@
 # OkLiteRun
 
+[![VS Code Marketplace](https://img.shields.io/visual-studio-marketplace/v/jonirafael.okliterun?label=VS%20Code%20Marketplace)](https://marketplace.visualstudio.com/items?itemName=jonirafael.okliterun)
+[![Open VSX](https://img.shields.io/open-vsx/v/jonirafael/okliterun?label=Open%20VSX)](https://open-vsx.org/extension/jonirafael/okliterun)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 A lightweight one-click code runner for VS Code (preview). Run the file you are editing, or just the current selection, without setting up a launch configuration.
 
 **Demo GIF:** a short screen recording will be added at `docs/demo.gif` before a stable release. This preview does not ship a demo animation.
 
 ## Inspired by Code Runner
 
-OkLiteRun is inspired by [Code Runner](https://github.com/formulahendry/vscode-code-runner) by Jun Han (formulahendry), MIT License. Code Runner's last release was in April 2024 and the project has hundreds of open issues. This extension is a clean-room rewrite in TypeScript. It does not copy Code Runner's source.
+OkLiteRun is inspired by [Code Runner](https://github.com/formulahendry/vscode-code-runner) by Jun Han (formulahendry), MIT License. This extension is a clean-room rewrite in TypeScript. It does not copy Code Runner's source.
 
 The preview concentrates on the problems that show up most often there:
 
@@ -108,30 +112,28 @@ Git Bash on Windows also gets `MSYS_NO_PATHCONV=1` so MSYS does not rewrite argu
 
 Python runs set `PYTHONUNBUFFERED=1` and `PYTHONIOENCODING=utf-8` unless the selected environment already sets the encoding. When the Python extension reports environment variables for the active interpreter, those are applied too.
 
-## Install from a VSIX
+## Install
 
-Do not publish this preview to a marketplace from a local checkout unless you mean to. To try a build:
+- **VS Code Marketplace:** search for "OkLiteRun" in the Extensions view, or run `code --install-extension jonirafael.okliterun`. Listing: <https://marketplace.visualstudio.com/items?itemName=jonirafael.okliterun>
+- **Open VSX** (VSCodium, Cursor, and other compatible editors): <https://open-vsx.org/extension/jonirafael/okliterun>
+- **VSIX:** download `okliterun-0.1.0.vsix` from [GitHub Releases](https://github.com/jonirafael/okliterun/releases), then in the Extensions view open the `...` menu, choose **Install from VSIX...**, and pick the file. Or run `code --install-extension okliterun-0.1.0.vsix`.
 
-1. Clone the repository and install dependencies with `npm install`.
-2. Package it:
+Open a supported file and use the play button in the editor title, or run **OkLiteRun: Run Code**.
 
-   ```bash
-   npx @vscode/vsce package
-   ```
+### Build a VSIX yourself
 
-   That produces `okliterun-0.1.0.vsix`. The `vscode:prepublish` script bundles the extension with esbuild first.
-3. In VS Code, open the Extensions view, open the `...` menu, choose **Install from VSIX...**, and pick the `.vsix` file. Or from a terminal:
+```bash
+git clone https://github.com/jonirafael/okliterun.git
+cd okliterun
+npm install
+npx @vscode/vsce package
+```
 
-   ```bash
-   code --install-extension okliterun-0.1.0.vsix
-   ```
-
-4. Reload the window if VS Code asks you to.
-5. Open a supported file and use the play button in the editor title, or run **OkLiteRun: Run Code**.
+That produces `okliterun-0.1.0.vsix`. The `vscode:prepublish` script bundles the extension with esbuild first.
 
 ### Windows
 
-The same VSIX installs on Windows. After **Install from VSIX...**:
+OkLiteRun works on Windows too. After installing it:
 
 1. Open a `.py` file that lives in a folder whose name contains a space.
 2. Press `Ctrl+Alt+R`, or click the play icon in the editor title bar.
@@ -172,6 +174,10 @@ A GitHub Actions workflow lives at [`docs/ci-workflow.yml`](docs/ci-workflow.yml
 - Command Prompt is switched to UTF-8 for the OkLiteRun terminal. Other terminals already follow VS Code's encoding.
 - PowerShell script runs do not load your profile (`-NoProfile`).
 - The play button is shown for the built-in languages, and for any other language id you add to `okliterun.executorMap` after the extension has activated.
+
+## Feedback
+
+Bug reports and ideas: <https://github.com/jonirafael/okliterun/issues>
 
 ## License
 

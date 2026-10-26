@@ -23,11 +23,21 @@
     "Other"
   ],
   "keywords": [
-    "run",
+    "code runner",
+    "run code",
     "runner",
+    "run",
     "python",
-    "compiler",
-    "terminal"
+    "javascript",
+    "typescript",
+    "c",
+    "cpp",
+    "java",
+    "go",
+    "php",
+    "powershell",
+    "terminal",
+    "compiler"
   ],
   "icon": "media/icon.png",
   "main": "./dist/extension.js",
@@ -167,5 +177,9 @@
     "typescript": "^5.7.2",
     "typescript-eslint": "^8.18.2",
     "vitest": "^2.1.8"
+  },
+  "galleryBanner": {
+    "color": "#1e1e1e",
+    "theme": "dark"
   }
 }
